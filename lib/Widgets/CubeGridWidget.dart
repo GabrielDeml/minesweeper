@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'cell.dart';
-import 'cell_widget.dart';
+
+import '../util/Cell.dart';
+import 'CellWidget.dart';
 
 class CubeGrid extends StatelessWidget {
   final List<List<Cell>> cells;
@@ -11,7 +12,6 @@ class CubeGrid extends StatelessWidget {
     required this.cells,
     this.sizeOfText = 30,
   });
-
 
   @override
   Widget build(BuildContext context) {

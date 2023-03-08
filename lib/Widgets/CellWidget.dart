@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'BoardState.dart';
-import 'cell.dart';
+import '../Providers/GridProvider.dart';
+import '../util/Cell.dart';
 
 class CellWidget extends StatelessWidget {
   final Cell cell;
   final Color color;
   final double size;
 
-  const CellWidget({super.key,
+  const CellWidget({
+    super.key,
     required this.cell,
     required this.color,
     required this.size,

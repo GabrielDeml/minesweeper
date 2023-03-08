@@ -1,8 +1,8 @@
-
-import 'package:provider/provider.dart';
-import 'package:flutter/material.dart';
 import 'dart:math';
-import 'cell.dart';
+
+import 'package:flutter/material.dart';
+
+import '../util/Cell.dart';
 
 /// An object that controls a list of [Todo].
 class GridProvider with ChangeNotifier {
@@ -12,23 +12,25 @@ class GridProvider with ChangeNotifier {
   void buildGrid(int width, int height, double fun) {
     Random random = Random();
     boardState = [
-      for (var i = 0; i < width; i++) [
-        for (var j = 0; j < height; j++)
-          Cell(
-            type: (random.nextDouble() < fun) ? '_' : 'B',
-            x: i,
-            y: j,
-            visible: false,
-          ),
-      ],
+      for (var i = 0; i < width; i++)
+        [
+          for (var j = 0; j < height; j++)
+            Cell(
+              type: (random.nextDouble() < fun) ? '_' : 'B',
+              x: i,
+              y: j,
+              visible: false,
+            ),
+        ],
     ];
 
-      for (var i = 0; i < width; i++) {
-        for (var j = 0; j < height; j++) {
-        boardState[i][j].type = (boardState[i][j].type == 'B') ? 'B' : countBombs(i, j);
+    for (var i = 0; i < width; i++) {
+      for (var j = 0; j < height; j++) {
+        boardState[i][j].type =
+            (boardState[i][j].type == 'B') ? 'B' : countBombs(i, j);
       }
     }
-      gameOver = false;
+    gameOver = false;
     notifyListeners();
   }
 
@@ -42,7 +44,10 @@ class GridProvider with ChangeNotifier {
     int count = 0;
     for (var i = -1; i < 2; i++) {
       for (var j = -1; j < 2; j++) {
-        if (x + i >= 0 && x + i < boardState.length && y + j >= 0 && y + j < boardState[0].length) {
+        if (x + i >= 0 &&
+            x + i < boardState.length &&
+            y + j >= 0 &&
+            y + j < boardState[0].length) {
           if (boardState[x + i][y + j].type == 'B') {
             count++;
           }
@@ -60,8 +65,12 @@ class GridProvider with ChangeNotifier {
     if (boardState[i][j].type == '0') {
       for (var k = -1; k < 2; k++) {
         for (var l = -1; l < 2; l++) {
-          if (i + k >= 0 && i + k < boardState.length && j + l >= 0 && j + l < boardState[0].length) {
-            if (!boardState[i + k][j + l].visible && boardState[i + k][j + l].type == '0') {
+          if (i + k >= 0 &&
+              i + k < boardState.length &&
+              j + l >= 0 &&
+              j + l < boardState[0].length) {
+            if (!boardState[i + k][j + l].visible &&
+                boardState[i + k][j + l].type == '0') {
               showSurrounding(i + k, j + l);
             }
           }
