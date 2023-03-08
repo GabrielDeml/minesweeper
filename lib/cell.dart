@@ -1,6 +1,3 @@
-import 'package:flutter/foundation.dart' show immutable;
-
-
 class Cell {
   Cell({
     required this.type,
