@@ -62,7 +62,18 @@ class GridProvider with ChangeNotifier {
     return count.toString();
   }
 
-  List<List<int>> alreadyChecked = [];
+  /// Get the score
+  int getScore() {
+    int score = 0;
+    for (var i = 0; i < boardState.length; i++) {
+      for (var j = 0; j < boardState[i].length; j++) {
+        if (boardState[i][j].selected && boardState[i][j].type != 'B') {
+          score++;
+        }
+      }
+    }
+    return score;
+  }
 
   /// Show the surrounding cells if they are empty
   /// This is recursive so there is no call to notifyListeners()
@@ -89,19 +100,6 @@ class GridProvider with ChangeNotifier {
         }
       }
     }
-  }
-
-  /// Get the score
-  int getScore() {
-    int score = 0;
-    for (var i = 0; i < boardState.length; i++) {
-      for (var j = 0; j < boardState[i].length; j++) {
-        if (boardState[i][j].selected && boardState[i][j].type != 'B') {
-          score++;
-        }
-      }
-    }
-    return score;
   }
 
   /// Show the cell and check if the game is over
