@@ -27,7 +27,6 @@ class CubeGrid extends StatelessWidget {
               for (var j = 0; j < cells[0].length; j++)
                 CellWidget(
                   cell: cells[i][j],
-                  color: Colors.blue,
                   size: 30,
                 ),
             ],

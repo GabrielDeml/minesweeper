@@ -4,13 +4,16 @@ import 'package:flutter/material.dart';
 
 import '../util/Cell.dart';
 
-/// An object that controls a list of [Todo].
+
 class GridProvider with ChangeNotifier {
+  // This is the state of the grid
   List<List<Cell>> boardState = [];
   bool gameOver = false;
 
+  /// This function builds the grid and sets the type of each cell
   void buildGrid(int width, int height, double fun) {
     Random random = Random();
+    // Randomly assign each cell a type
     boardState = [
       for (var i = 0; i < width; i++)
         [
@@ -24,6 +27,7 @@ class GridProvider with ChangeNotifier {
         ],
     ];
 
+    // Count the number of bombs around each cell
     for (var i = 0; i < width; i++) {
       for (var j = 0; j < height; j++) {
         boardState[i][j].type =
@@ -34,12 +38,14 @@ class GridProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Reset the game
   void reset() {
     gameOver = false;
     boardState = [];
     notifyListeners();
   }
 
+  /// count the number of bombs around a cell
   String countBombs(int x, int y) {
     int count = 0;
     for (var i = -1; i < 2; i++) {
@@ -57,9 +63,9 @@ class GridProvider with ChangeNotifier {
     return count.toString();
   }
 
+  /// Show the surrounding cells if they are empty
+  /// This is recursive so there is no call to notifyListeners()
   void showSurrounding(int i, int j) {
-    // If they are empty cells, show the surrounding cells too
-    // this has to be it's own function because it's recursive and we don't want to call notifyListeners() every time
     boardState[i][j].visible = true;
     boardState[i][j].selected = true;
     if (boardState[i][j].type == '0') {
@@ -79,6 +85,7 @@ class GridProvider with ChangeNotifier {
     }
   }
 
+  /// Get the score
   int getScore() {
     int score = 0;
     for (var i = 0; i < boardState.length; i++) {
@@ -91,8 +98,8 @@ class GridProvider with ChangeNotifier {
     return score;
   }
 
+  /// Show the cell and check if the game is over
   void showCell(int i, int j) {
-    // Show the cell
     if (boardState[i][j].type == 'B') {
       boardState[i][j].visible = true;
       gameOver = true;
@@ -105,11 +112,11 @@ class GridProvider with ChangeNotifier {
       if (boardState[i][j].type == '0') {
         showSurrounding(i, j);
       }
-
       notifyListeners();
     }
   }
 
+  /// Show all the cells
   void toggleAll() {
     for (var i = 0; i < boardState.length; i++) {
       for (var j = 0; j < boardState[i].length; j++) {

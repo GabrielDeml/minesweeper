@@ -16,6 +16,7 @@ class GameScreen extends StatelessWidget {
           children: [
             CubeGrid(cells: gridProvider.boardState),
             const SizedBox(height: 20),
+            // Show the reset button only when the game is over
             (gridProvider.gameOver)
                 ? ElevatedButton(
                     onPressed: () {

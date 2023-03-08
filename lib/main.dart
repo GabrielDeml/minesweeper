@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, lines_longer_than_80_chars
 import 'package:flutter/material.dart';
 import 'package:minesweeper/Screens/GameScreen.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +36,7 @@ class MyHomePage extends StatelessWidget {
       // Listen to the provider to rebuild the widget when the grid changes
       body: Consumer<GridProvider>(
         builder: (context, gridProvider, child) {
+          // Show the start screen if the grid is empty
           return (gridProvider.boardState.isEmpty)
               ? const StartScreen()
               : const GameScreen();

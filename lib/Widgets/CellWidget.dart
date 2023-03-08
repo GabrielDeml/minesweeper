@@ -6,13 +6,11 @@ import '../util/Cell.dart';
 
 class CellWidget extends StatelessWidget {
   final Cell cell;
-  final Color color;
   final double size;
 
   const CellWidget({
     super.key,
     required this.cell,
-    required this.color,
     required this.size,
   });
 
