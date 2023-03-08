@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import '../util/Cell.dart';
 
-
 class GridProvider with ChangeNotifier {
   // This is the state of the grid
   List<List<Cell>> boardState = [];
@@ -63,11 +62,11 @@ class GridProvider with ChangeNotifier {
     return count.toString();
   }
 
+  List<List<int>> alreadyChecked = [];
+
   /// Show the surrounding cells if they are empty
   /// This is recursive so there is no call to notifyListeners()
   void showSurrounding(int i, int j) {
-    boardState[i][j].visible = true;
-    boardState[i][j].selected = true;
     if (boardState[i][j].type == '0') {
       for (var k = -1; k < 2; k++) {
         for (var l = -1; l < 2; l++) {
@@ -75,9 +74,16 @@ class GridProvider with ChangeNotifier {
               i + k < boardState.length &&
               j + l >= 0 &&
               j + l < boardState[0].length) {
-            if (!boardState[i + k][j + l].visible &&
-                boardState[i + k][j + l].type == '0') {
-              showSurrounding(i + k, j + l);
+            // We need to two checks to make sure we don't check the same cell twice causing an infinite loop
+            // First check if the cell is already visible
+            if (!boardState[i + k][j + l].visible) {
+              // If it not visible set it to visible and selected
+              boardState[i + k][j + l].visible = true;
+              boardState[i + k][j + l].selected = true;
+              // If the cell is empty, show the surrounding cells too
+              if (boardState[i + k][j + l].type == '0') {
+                showSurrounding(i + k, j + l);
+              }
             }
           }
         }
