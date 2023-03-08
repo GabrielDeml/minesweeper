@@ -1,20 +1,23 @@
 import 'package:flutter/foundation.dart' show immutable;
 
-/// A read-only description of a Cell.
-@immutable
+
 class Cell {
-  const Cell({
+  Cell({
     required this.type,
-    required this.id,
+    required this.x,
+    required this.y,
     this.visible = false,
+    this.selected = false,
   });
 
-  final String type;
-  final String id;
-  final bool visible;
+  String type;
+  final int x;
+  final int y;
+  bool visible;
+  bool selected;
 
   @override
   String toString() {
-    return 'Cell(type: $type, id: $id, visible: $visible)';
+    return 'Cell(type: $type, x: $x, y: $y, visible: $visible, selected: $selected)';
   }
 }

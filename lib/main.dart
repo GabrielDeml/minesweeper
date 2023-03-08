@@ -1,43 +1,169 @@
+// ignore_for_file: public_member_api_docs, lines_longer_than_80_chars
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:minesweeper/CubeGrid.dart';
-import 'providers.dart';
+import 'package:provider/provider.dart';
 
 import 'BoardState.dart';
-import 'cell.dart';
+import 'CubeGrid.dart';
 
-// We create a "provider", which will store a value (here "Hello world").
-// By using a provider, this allows us to mock/override the value exposed.
-
+/// This is a reimplementation of the default Flutter application using provider + [ChangeNotifier].
 
 void main() {
   runApp(
-    // For widgets to be able to read providers, we need to wrap the entire
-    // application in a "ProviderScope" widget.
-    // This is where the state of our providers will be stored.
-    const ProviderScope(
-      child: MyApp(),
+    /// Providers are above [MyApp] instead of inside it, so that tests
+    /// can use [MyApp] while mocking the providers
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => GridProvider()),
+      ],
+      child: const MyApp(),
     ),
   );
 }
 
-// Note: MyApp is a HookConsumerWidget, from hooks_riverpod.
-class MyApp extends ConsumerWidget {
-  const MyApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final grid = ref.watch(gridProvider);
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      home: MyHomePage(),
+    );
+  }
+}
 
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: const Text('Example')),
-        body: Center(
-          child: CubeGrid(
-            cells: grid,
-          ),
-        ),
+class MyHomePage extends StatelessWidget {
+  const MyHomePage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // Listen to the provider to rebuild the widget when the grid changes
+      body: Consumer<GridProvider>(
+        builder: (context, gridProvider, child) {
+          return (gridProvider.boardState.isEmpty)
+          ? const StartScreen()
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children:[
+            CubeGrid(cells: gridProvider.boardState),
+            const SizedBox(height: 20),
+            (gridProvider.gameOver) ? ElevatedButton(
+              onPressed: () {
+                gridProvider.reset();
+              },
+              child: const Text('Reset'),
+            ) : const SizedBox(height: 0),
+            const SizedBox(height: 20),
+            Text('Score: ${gridProvider.getScore()}'),
+          ]);
+        },
       ),
     );
   }
 }
+
+class StartScreen extends StatefulWidget {
+  const StartScreen({super.key});
+
+  @override
+  _StartScreenState createState() => _StartScreenState();
+}
+
+class _StartScreenState extends State<StartScreen> {
+  double _widthValue = 8;
+  double _heightValue = 8;
+  double _funValue = 0.7;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'Width: ${_widthValue.round()}',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  'Height: ${_heightValue.round()}',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  'Fun: ${_funValue.toStringAsFixed(1)}',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Slider(
+            value: _widthValue,
+            min: 0,
+            max: 15,
+            onChanged: (value) {
+              setState(() {
+                _widthValue = value;
+              });
+            },
+            divisions: 15,
+            label: 'Width: ${_widthValue.round()}',
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Slider(
+            value: _heightValue,
+            min: 0,
+            max: 15,
+            onChanged: (value) {
+              setState(() {
+                _heightValue = value;
+              });
+            },
+            divisions: 15,
+            label: 'Height: ${_heightValue.round()}',
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Slider(
+            value: _funValue,
+            min: 0,
+            max: 1,
+            onChanged: (value) {
+              setState(() {
+                _funValue = value;
+              });
+            },
+            label: 'Fun: ${_funValue.toStringAsFixed(1)}',
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            onPressed: () {
+              context.read<GridProvider>().buildGrid(
+                    _widthValue.round(),
+                    _heightValue.round(),
+                    _funValue,
+                  );
+            },
+            child: const Text('Start'),
+          ),
+        ),
+      ],
+    );
+  }
+}
+

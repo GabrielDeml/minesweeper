@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:provider/provider.dart';
 
 import 'BoardState.dart';
 import 'cell.dart';
-import 'providers.dart';
 
-class CellWidget extends HookConsumerWidget {
+class CellWidget extends StatelessWidget {
   final Cell cell;
   final Color color;
   final double size;
@@ -17,13 +16,13 @@ class CellWidget extends HookConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return GestureDetector(
       child: Container(
         width: size,
         height: size,
         decoration: BoxDecoration(
-          color: (cell.visible) ? Colors.red : Colors.blue,
+          color: (cell.selected) ? Colors.red : Colors.blue,
           border: Border.all(color: Colors.black, width: 1),
         ),
         child: Center(
@@ -38,7 +37,7 @@ class CellWidget extends HookConsumerWidget {
         ),
       ),
       onTap: () {
-        ref.read(gridProvider.notifier).toggle(cell.id);
+        context.read<GridProvider>().showCell(cell.x, cell.y);
       },
     );
   }

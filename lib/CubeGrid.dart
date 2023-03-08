@@ -16,9 +16,13 @@ class CubeGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         for (var i = 0; i < cells.length; i++)
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               for (var j = 0; j < cells[0].length; j++)
                 CellWidget(
