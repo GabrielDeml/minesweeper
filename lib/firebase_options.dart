@@ -68,7 +68,7 @@ class DefaultFirebaseOptions {
     projectId: 'minesweeper-4ab76',
     storageBucket: 'minesweeper-4ab76.appspot.com',
     iosClientId: '78515627848-2k16eutr2jv28camfb7oa3d6h6cfoc4g.apps.googleusercontent.com',
-    iosBundleId: 'com.example.minesweeper',
+    iosBundleId: 'com.gabe.minesweeper',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -78,6 +78,6 @@ class DefaultFirebaseOptions {
     projectId: 'minesweeper-4ab76',
     storageBucket: 'minesweeper-4ab76.appspot.com',
     iosClientId: '78515627848-7nn797440gt8clmio39mc5cpq1mo0ul5.apps.googleusercontent.com',
-    iosBundleId: 'com.example.minesweeper.RunnerTests',
+    iosBundleId: 'com.gabe.minesweeper.RunnerTests',
   );
 }

@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.minesweeper">
+    package="com.gabe.minesweeper">
    <application
         android:label="minesweeper"
         android:name="${applicationName}"
@@ -9,7 +9,7 @@
            android:name="com.google.android.gms.ads.APPLICATION_ID"
            android:value="ca-app-pub-3854158398626163~7206935359"/>
         <activity
-            android:name=".MainActivity"
+            android:name="com.gabe.minesweeper.MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"

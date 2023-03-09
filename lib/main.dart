@@ -8,13 +8,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'Providers/GridProvider.dart';
 import 'Screens/StartScreen.dart';
-import 'firebase_options.dart';
 
 Future<void> main() async {
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     MultiProvider(
       providers: [
